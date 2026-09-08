@@ -1,0 +1,9 @@
+# Chapitre 9 — liquidate : un facteur d incitation derive du LLTV et la bad debt socialisee
+
+`liquidate` ne definit aucun bonus de liquidation configurable par marche : le facteur d'incitation est calcule directement a partir du LLTV du marche par une formule fixe dans `ConstantsLib` (`LIQUIDATION_CURSOR` = 0,3), plafonnee a `MAX_LIQUIDATION_INCENTIVE_FACTOR` (1,15, soit 15 % maximum). Plus le LLTV d'un marche est eleve (donc plus la marge de securite entre emprunt maximal et seuil de liquidation est etroite), plus le facteur d'incitation calcule se rapproche de ce plafond : le protocole ajuste ainsi automatiquement l'attractivite de la liquidation a la marge de securite disponible, sans intervention de la gouvernance marche par marche.
+
+Le liquidateur precise soit le montant de collateral qu'il souhaite saisir, soit le nombre de parts de dette qu'il souhaite rembourser (encore une fois `exactlyOneZero`) ; le contrat calcule l'autre valeur via le prix de l'oracle et le facteur d'incitation, transfere le collateral saisi au liquidateur, puis preleve le remboursement en jeton emprunte.
+
+Si, apres la saisie de collateral, la position du compte liquide tombe a zero collateral alors qu'il reste des parts de dette impayees, ce reliquat est traite comme de la **bad debt** : les parts de dette restantes sont annulees et le montant correspondant est directement soustrait de `totalBorrowAssets` **et** de `totalSupplyAssets`. Contrairement aux reserves de Comet ou aux encheres de MakerDAO deja documentees pour ce compte, cette perte est donc socialisee instantanement entre tous les preteurs du marche concerne, par une simple diminution de la valeur de chaque part de pret existante — sans aucun mecanisme de reserve intermediaire.
+
+[Chapitre suivant : flashLoan et les callbacks](10-flashloan.md)
