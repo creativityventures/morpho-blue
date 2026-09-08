@@ -1,3 +1,7 @@
+## Parcours francais
+
+Ce depot contient un parcours pedagogique en francais dans docs/fr/ : lecture commentee du code de Morpho Blue, un mecanisme par chapitre, sans aucune installation ni execution du projet.
+
 # Morpho Blue
 
 Morpho Blue is a non-custodial lending protocol implemented for the Ethereum Virtual Machine.
